@@ -1,0 +1,555 @@
+
+#Explore & Summarize Data Using R By Rawan Alghamdi
+========================================================
+
+
+## Introduction 
+
+This project aims at exploring and analysing a dataset about red wine quality using special statistical programming language which is R. The dataset includes 1599 observations of 13 variables.
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, Packages}
+#Load all required packages
+
+library(ggplot2)
+library(dplyr)
+library(gridExtra)
+library(knitr)
+library(GGally)
+library(reshape2)
+library(corrplot)
+library(microbenchmark)
+library(psych)
+```
+
+
+```{r echo=FALSE, message=FALSE, warning=FALSE, Load_the_Data}
+# Load the Data
+wineQualityReds <- read.csv('wineQualityReds.csv')
+```
+
+## Univariate Plots Section
+
+This is the summary of the dataset
+
+```{r echo=FALSE, Univariate_Plots}
+#dispay a summary of the dataset
+
+summary(wineQualityReds)
+
+```
+
+This shows the different data types and values of the dataset variables
+
+The dataset contains of 1599 observations of 13 variables.
+```{r echo=FALSE}
+#dispay the characterestics of the dataset variables
+
+str(wineQualityReds)
+
+```
+
+This section visulizes a plot for each variable in the dataset. A description of the shape/center/spread of the plot (histogram) is stated clearely under each one.
+
+### fixed.acidity
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of fixed acidity feature
+
+ggplot(wineQualityReds, aes(x=fixed.acidity)) + geom_histogram()
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Summary of fixed.acidity feature
+
+summary(wineQualityReds$fixed.acidity)
+```
+
+The distribution of the fixed.acidity histogram is right-skewed. The range of data is  11.3. The main peak is approximately at 7.There is a small gap between the range 15 and 15.5. Most observations fall in the range 7.10 - 9.20
+
+### volatile.acidity
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of volatile.acidity feature
+
+ggplot(wineQualityReds, aes(x=volatile.acidity)) + geom_histogram()
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Summary of volatile.acidity feature
+
+summary(wineQualityReds$volatile.acidity)
+```
+
+The distribution of the volatile.acidity histogram is right-skewed with a short tail in the right. The range of data is 1.46. There are two peaks at approxemately 0.4 and 0.6 so, we can say that this plot is bimodal.Most observations fall in the range 0.3 - 0.64.There is a gap after approxemately 1.3 so, there is an outliers in the right end of the plot
+
+### citric.acid
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of citric.acid feature
+
+ggplot(wineQualityReds, aes(x=citric.acid)) + geom_histogram()
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Summary of citric.acid feature
+
+summary(wineQualityReds$citric.acid)
+```
+
+The distribution of the citric.acid histogram is right-skewed .The range of data is 1. The peak is at 0 and this means that most red wines have zero critic acid.Most observations fall in the range 0.090 - 0.420.There is an outliers in the right end of the plot
+
+
+### residual.sugar
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of residual.sugar feature
+
+ggplot(wineQualityReds, aes(x=residual.sugar)) + geom_histogram()
+
+```
+```{r}
+ggplot(wineQualityReds, aes(x=residual.sugar)) + geom_histogram(binwidth = 0.03)+ scale_x_log10() # Transforming the data, since the regular plotting will result in a long tailed distribution 
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Summary of residual.sugar feature
+
+summary(wineQualityReds$residual.sugar)
+```
+
+The distribution of the residual.sugar histogram is right-skewed with a long tail in right end and with some gaps.The range of data is 14.6. The peak is at 2.Most observations fall in the range 1.900 - 2.600 and there are a lot of small bars displayed in the right end of the plot.
+
+
+### chlorides
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of chlorides feature
+
+ggplot(wineQualityReds, aes(x=chlorides)) + geom_histogram()
+
+```
+```{r}
+ggplot(wineQualityReds, aes(x=chlorides)) + geom_histogram(binwidth = 0.03)+ scale_x_log10() # Transforming the data, since the regular plotting will result in a long tailed distribution 
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Summary of chlorides feature
+
+summary(wineQualityReds$chlorides)
+```
+
+The distribution of the chlorides histogram is right-skewed with a long tail in right end and with some gaps although it looks normal in the left side around the peak.The range of data is 0.599. The median of the observations is 0.07900 .Most observations fall in the range 0.0.7000 - 0.09000 and there are a lot of small bars displayed in the right end of the plot.
+
+### free.sulfur.dioxide
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of free.sulfur.dioxide feature
+
+ggplot(wineQualityReds, aes(x=free.sulfur.dioxide)) + geom_histogram()
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Summary of free.sulfur.dioxide feature
+
+summary(wineQualityReds$free.sulfur.dioxide)
+```
+
+The distribution of the free.sulfur.dioxide histogram is right-skewed with a gap in the right around 60.The range of data is 71. The median of the observations is 14 .Most observations fall in the range 7 - 21. 
+
+### total.sulfur.dioxide
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of total.sulfur.dioxide feature
+
+ggplot(wineQualityReds, aes(x=total.sulfur.dioxide)) + geom_histogram()
+
+```
+```{r}
+ggplot(wineQualityReds, aes(x=total.sulfur.dioxide)) + geom_histogram(binwidth = 0.03)+ scale_x_log10() # Transforming the data, since the regular plotting will result in a long tailed distribution 
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Summary of total.sulfur.dioxide feature
+
+summary(wineQualityReds$total.sulfur.dioxide)
+```
+
+The distribution of the total.sulfur.dioxide histogram is right-skewed with a short tail and with  a gap between approximately 170 and 280.The range of data is 283. The median of the observations is 38 .Most observations fall in the range 22 - 62. 
+
+
+### density
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of density feature
+
+ggplot(wineQualityReds, aes(x=density)) + geom_histogram()
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Summary of density feature
+
+summary(wineQualityReds$density)
+```
+
+The distribution of the density histogram is almost symmetric.The range of data is 0.0136 The median of the observations is 0.9968 .Most observations fall in the range 0.9956 - 0.9978. 
+
+
+
+### pH
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of pH feature
+
+ggplot(wineQualityReds, aes(x=pH)) + geom_histogram()
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Summary of pH feature
+
+summary(wineQualityReds$pH)
+```
+
+The distribution of the pH histogram is almost symmetric.It could be bimodal because there are two closed peaks.The range of data is 1.27 The median of the observations is 3.310 .Most observations fall in the range 3.210 - 3.400. 
+
+
+### sulphates
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of sulphates feature
+
+ggplot(wineQualityReds, aes(x=sulphates)) + geom_histogram()
+
+```
+```{r}
+ggplot(wineQualityReds, aes(x=sulphates)) + geom_histogram(binwidth = 0.03)+ scale_x_log10() # Transforming the data, since the regular plotting will result in a long tailed distribution 
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Summary of sulphates feature
+
+summary(wineQualityReds$sulphates)
+```
+
+The distribution of the sulphates histogram is right-skewed with a long tail and many gaps in the right which means that there are some outliers.The range of data is 1.67 The median of the observations is 0.6200 .Most observations fall in the range 0.5500 - 0.7300. 
+
+
+### alcohol
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of alcohol feature
+
+ggplot(wineQualityReds, aes(x=alcohol)) + geom_histogram()
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Summary of alcohol feature
+
+summary(wineQualityReds$alcohol)
+```
+
+The distribution of the alcohol histogram is right-skewed with a gap in the right after 14.The peak is at 9.5. The range of data is 6.5 The median of the observations is 10.20 .Most observations fall in the range 9.50 - 11.10. 
+
+
+### quality
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of quality feature
+
+ggplot(wineQualityReds, aes(x=quality)) + geom_bar()
+
+```
+
+```{r echo=FALSE, message=FALSE, warning=FALSE}
+#Summary of quality feature
+
+summary(wineQualityReds$quality)
+```
+
+The range of data is 5 The median of the observations is 6 .Most red wines are of quality 5 and 6. 
+
+
+## Univariate Analysis
+
+### What is the structure of the dataset?
+
+There is 1599 observations of 13 variables (index variable is included even though it's not that imortant in the analysis).Each observation indicates one of the red wine samples.
+
+
+### What is/are the main feature(s) of interest in the dataset?
+
+The main feature of interest in this dataset is the quality.
+
+
+### What other features in the dataset do you think will help support your investigation into your feature(s) of interest?
+
+I think all features in the dataset can support the investigation in a way or another. Some of the features may have big effect and some may have small effect but all can help to make the analysis and investigation easier and more accurate.
+
+### Are there any new variables created from existing variables in the dataset?
+
+No.
+
+### Of the features investigated, were there any unusual distributions? Did you perform any operations on the data to tidy, adjust, or change the form of the data? If so, why did you do this?
+
+The dataset is already tidy so, there was no need to adjust it. The first variable which is the index is not important but there was no need to remove it as keeping it will not affect the analysis badely. There were no unusual distributions and I noticed that most plots of the variables are right-skewed. There are no left-skewed distributions at all.
+
+
+# Bivariate Plots Section
+
+This section visulizes a relationship between some variables in the dataset. A description of the each plot is stated clearely under each one.
+
+```{r echo=FALSE, Bivariate_Plots}
+#Compute correlation matrix
+
+cm <- cor(wineQualityReds)
+round(cm, 2)
+```
+```{r echo=FALSE}
+#Compute correlation plot using colors method
+wineQualityReds$X <- NULL
+
+cor.plot(wineQualityReds[sapply(wineQualityReds, is.numeric)])
+
+```
+
+The strength of a relationship between two correlated variables is determened by looking at the numbers. A correlation of 0 means that no relationship exists between the two variables, whereas a correlation of 1 indicates a perfect positive relationship. It is uncommon to find a perfect positive relationship in the real world. Chances are that if we find a positive correlation between two variables that the correlation will lie somewhere between 0 and 1.
+
+
+The observations from above correlation matrix and correlation plot:
+
+1- There is no relatioship between volatile acidity and residual sugar variables.
+2- There is a negligible relatioship between many variables for example fixed acidity and residual sugar.
+3- All variables have negligible to weak positive relationship with quality except alcohol that has the strongest positive relationship with quality.
+4- residual.sugarhas the weakest positive relationship with quality.
+5- volatile.acidity has the strongest negative relationship with quality but all variables in general have negligible to moderate negative relationship with quality.
+6- free.sulfur.dioxide has the weakest negative relationship with quality.
+
+
+
+Here, a relationship between some variables is visulized using scatter plots.
+
+```{r  echo=FALSE}
+#The relationship between fixed.acidity and citric.acid
+
+ggplot(wineQualityReds, aes(x=fixed.acidity, y=citric.acid)) + geom_point(alpha = 1/2)
+```
+```{r message=FALSE, warning=FALSE}
+ggplot(wineQualityReds, aes(x=fixed.acidity, y=citric.acid)) + geom_point(alpha = 1/2)+
+xlim(0.00,14)+
+ylim(0.00,0.75)
+```
+
+It seems that ther is a very strong positive relationship between fixed.acidity and citric.acid.
+
+
+```{r  echo=FALSE}
+#The relationship between volatile.acidity and residual.sugar
+
+ggplot(wineQualityReds, aes(x=volatile.acidity, y=residual.sugar)) + geom_point(alpha = 1/2)
+```
+```{r message=FALSE, warning=FALSE}
+ggplot(wineQualityReds, aes(x=volatile.acidity, y=residual.sugar)) + geom_point(alpha = 1/2)+
+ xlim(0.0,1.3)+
+ylim(0,12) 
+
+```
+
+
+
+It seems that ther is no  relationship between volatile.acidity and residual.sugar.
+
+
+```{r  echo=FALSE}
+#The relationship between fixed.acidity and chlorides
+
+ggplot(wineQualityReds, aes(x=fixed.acidity, y=chlorides)) + geom_point(alpha = 1/2)
+```
+
+```{r message=FALSE, warning=FALSE}
+ggplot(wineQualityReds, aes(x=fixed.acidity, y=chlorides)) + geom_point(alpha = 1/2)+
+
+ylim(0.0,0.2) 
+
+```
+
+
+
+It seems that ther is very negligible relationship between fixed.acidity and chlorides.
+
+
+```{r  echo=FALSE}
+#The relationship between fixed.acidity and pH
+
+ggplot(wineQualityReds, aes(x=fixed.acidity, y=pH)) + geom_point(alpha = 1/2)
+```
+
+It seems that ther is strong negative relationship between fixed.acidity and pH.
+
+
+```{r  echo=FALSE}
+#The relationship between sulphates and pH
+
+ggplot(wineQualityReds, aes(x=sulphates, y=pH)) + geom_point(alpha = 1/2)
+```
+```{r message=FALSE, warning=FALSE}
+ggplot(wineQualityReds, aes(x=sulphates, y=pH)) + geom_point(alpha = 1/2)+
+xlim(0.0,1.4)
+
+```
+
+
+It seems that ther is weak negative relationship between sulphates and pH.
+
+```{r  echo=FALSE}
+#The relationship between density and citric.acid
+
+ggplot(wineQualityReds, aes(x=density, y=citric.acid)) + geom_point(alpha = 1/2)
+```
+
+
+It seems that ther is moderate postive relationship between density and citric.acid.
+
+
+## Bivariate Analysis
+
+### Talk about some of the relationships you observed in this part of the \
+investigation. How did the feature(s) of interest vary with other features in \
+the dataset?
+
+
+There is only one exact zero correlation between variables which is between volatile.acidity and residual.sugar.
+
+In generla, all variables have negligible to weak positive relationship with quality but alcohol has the strongest positive relationship and residual.sugar has the weakest positive relationship.
+
+In general, all variables have negligible to moderate negative relationship with quality but  volatile.acidity has the strongest negative relationship and free.sulfur.dioxide has the weakest negative relationship.  
+
+
+### Did you observe any interesting relationships between the other features \
+(not the main feature(s) of interest)?
+
+No, I didn't.
+
+
+### What was the strongest relationship you found?
+
+alcohol has the strongest positive relationship with quality.
+
+The variables that have the strongest relationship among others are the following:
+
+1- fixed.acidity and citric.acid
+2- fixed.acidity and density
+3- free.sulfur.dioxide and total.sulfur.dioxide
+
+
+
+## Multivariate Plots Section
+
+```{r echo=FALSE, Multivariate_Plots}
+#The relationship between pH, alcohol and quality
+
+ggplot(data = wineQualityReds, aes(pH, alcohol, color = as.factor(quality))) +
+  geom_point()+theme_dark()
+
+```
+
+The above plot shows the relationship between three variables: alcohol, pH and quality.Higher levels of alcohol associated with higher levels of quality but higher levels of PH associated with lower levels of quality.So,the wine becomes better when alcohol increases and PH decreases. 
+
+
+```{r echo=FALSE, Multivariate_Plots2}
+#The relationship between alcohol, sulphates and quality
+
+ggplot(data = wineQualityReds, aes(alcohol, sulphates, color = as.factor(quality))) +
+  geom_point()+theme_dark()
+  
+```
+```{r message=FALSE, warning=FALSE}
+ggplot(data = wineQualityReds, aes(alcohol, sulphates, color = as.factor(quality))) +
+  geom_point()+
+ylim(0.0,1.4)+theme_dark()
+```
+
+
+The above plot shows the relationship between three variables: sulphates, alcohol and quality.Higher levels of sulphates associated with higher levels of quality and also higher levels of alcohol associated with higher levels of quality.So, the wine becomes better when both alcohol and sulphates increase.
+
+
+## Multivariate Analysis
+
+### Talk about some of the relationships you observed in this part of the \
+investigation. Were there features that strengthened each other in terms of \
+looking at your feature(s) of interest?
+
+The main and important observation I made from the above multivariate plots is that better wine has higher level of alcohol and sulphates but lower level of pH.
+
+### Were there any interesting or surprising interactions between features?
+
+I have studied only the relationship between few variables and I didn't notice any surprising interactions between them.
+
+
+## Final Plots and Summary
+
+This section display three plots, each with its own description. I chose the first plot from each of the three section, univariate plots section, bivariate plots section and multivariate plots section.
+
+### Plot One
+
+```{r echo=FALSE,message=FALSE, warning=FALSE}
+#Plot a histogram of fixed acidity feature
+
+ggplot(wineQualityReds, aes(x=fixed.acidity)) + geom_histogram() + xlab("fixed acidity (g/dm^3)")+ylab("Number of Wine Samples")+ggtitle("Frequency of fixed acidity Values")+geom_histogram(fill = 'pink')
+
+```
+
+
+### Description One
+
+ 4.60    7.10    7.90    8.32    9.20   15.90 
+ 
+The distribution of the fixed.acidity histogram is right-skewed. The minimum value is 4.60 and the maximum is 15.90 so, the range of data is  11.3. The main peak is approximately at 7.There is a small gap between the range 15 and 15.5. Most observations fall in the range 7.10 - 9.20
+
+
+### Plot Two
+
+```{r  echo=FALSE}
+#The relationship between fixed.acidity and citric.acid
+
+ggplot(wineQualityReds, aes(x=fixed.acidity, y=citric.acid)) + geom_point()+ xlab("fixed acidity (g/dm^3)")+ylab("citric.acid(g/dm^3)")+ggtitle("The Relationship Between Fixed acidity & Citric acid")
+```
+
+
+### Description Two
+
+It seems that ther is a very strong positive relationship between fixed.acidity and citric.acid with some few outliers.
+
+
+### Plot Three
+
+```{r echo=FALSE}
+#The relationship between pH, alcohol and quality
+
+ggplot(data = wineQualityReds, aes(pH, alcohol, color = as.factor(quality))) +
+  geom_point()+ xlab("pH")+ylab("alcohol(% by volume)")+ggtitle("The Relationship Between pH, alcohol and quality")+theme_dark()
+  
+```
+
+
+### Description Three
+
+The above plot shows the relationship between three variables: alcohol, pH and quality.Higher levels of alcohol associated with higher levels of quality but higher levels of PH associated with lower levels of quality.So,the wine becomes better when alcohol increases and PH decreases. 
+
+
+# Reflection
+
+The dataset I worked in for this project contains of 1599 obseravations of 12 main variables.It is already tidy, there was no need for cleaning in the begining of the project.
+
+The project was very interesting. The easiest but longest part is plotting histogram and summarize each feature and the main difficulty I faced while working in this project is dealing with multivariate analysis because it is something new for me that I didnt do it before using python.
+
+I studied the relationship between many variables and I noticed that there is no relatioship between volatile acidity and residual sugar variables..All variables have negligible to weak positive relationship with quality except alcohol that has the strongest positive relationship with quality.residual.sugarhas the weakest positive relationship with quality.volatile.acidity has the strongest negative relationship with quality but all variables in general have negligible to moderate negative relationship with quality.free.sulfur.dioxide has the weakest negative relationship with quality.
+
+In the future, I wich I can invest more time studying the relationship of the variables I didn't explore in the project and make more multivariate plots.
+

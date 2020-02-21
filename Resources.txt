@@ -1,0 +1,19 @@
+
+The Resources I Have Used To Complete This Project:
+
+
+1.Introduction to R Markdown
+
+https://www.youtube.com/watch?v=-apyD5f9nwg
+
+
+2- Import data and read CSV file in RStudio
+
+https://www.youtube.com/watch?v=xtT7P5mgq8I
+
+
+3- Correlation
+
+https://study.com/academy/lesson/positive-correlation-in-psychology-examples-definition-quiz.html
+
+
